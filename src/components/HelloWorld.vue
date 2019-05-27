@@ -1,9 +1,14 @@
 <template>
   <el-form  :model="searchForm"  ref="searchForm" v-model="searchForm" label-width="80px">
   <el-row>
-    <el-form-item label="念头" prop="think">
-      <el-input type="text" class="searchBox" v-model="searchForm.yourIdea"></el-input>
-    </el-form-item>
+    <el-col :span="18">
+      <el-form-item label="念头" prop="think">
+        <el-input type="text" class="searchBox"  auto-complete="off" placeholder="请输入你的念头" v-model="searchForm.yourIdea"></el-input>
+      </el-form-item>
+    </el-col>
+    <el-col :span="2">
+      <el-button type="primary" @click="submitForm('searchForm')">搜索</el-button>
+    </el-col>
   </el-row>
   </el-form>
 </template>
@@ -14,8 +19,21 @@ export default {
   data () {
     return {
       searchForm:{
-        yourIdea: '请输入想要搜索关键字'
+        yourIdea: ''
       }
+    }
+  },
+  methods:{
+    submitForm(searchForm){
+      this.$axios.get("/product/findProductList",{
+        params:{
+          a:"a"
+        }
+      }).then((response)=>{
+        console.log(response.data);
+      }).catch(function (error) {
+        console.log(error)
+      });
     }
   }
 }
