@@ -1,29 +1,34 @@
 <template>
-  <el-form  :model="searchForm"  ref="searchForm" v-model="searchForm" label-width="80px">
-  <el-row>
-    <el-col :span="18">
-      <el-form-item label="念头" prop="think">
-        <el-input type="text" class="searchBox"  auto-complete="off" placeholder="请输入你的念头" v-model="searchForm.yourIdea"></el-input>
-      </el-form-item>
-    </el-col>
-    <el-col :span="2">
-      <el-button type="primary" @click="submitForm('searchForm')">搜索</el-button>
-    </el-col>
-  </el-row>
-  </el-form>
+  <el-tabs @tab-click="handleClick" v-model="activeName" style="line-height: 0px;">
+    <el-tab-pane label="搜索" name="HelloWorld"><router-view></router-view></el-tab-pane>
+    <el-tab-pane label="添加类" name="newClass"><router-view></router-view></el-tab-pane>
+    <el-tab-pane label="新坐标" name="newLabel"><router-view></router-view></el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>
 export default {
+  inject: ['reload'],
   name: 'HelloWorld',
   data () {
     return {
-      searchForm:{
-        yourIdea: ''
-      }
+      activeName: 'HelloWorld'
     }
   },
-  methods:{
+  methods: {
+    handleClick (tab, event) {
+      let urlStr = ''
+      if (tab.name === 'HelloWorld') {
+        urlStr = '/HelloWorld'
+      }
+      if (tab.name === 'newClass') {
+        urlStr = '/newClass'
+      }
+      if (tab.name === 'newLabel') {
+        urlStr = '/newLabel'
+      }
+      this.$router.push(urlStr)
+    },
     submitForm(searchForm){
       this.$axios.get("/product/findProductList",{
         params:{
@@ -34,7 +39,6 @@ export default {
       }).catch(function (error) {
         console.log(error)
       });
-    }
   }
 }
 </script>
