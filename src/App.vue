@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <router-link to="/HelloWorld">首页</router-link>
+    <router-link to="/newClass">添加类</router-link>
+    <router-link to="/newLabel">添加标签</router-link>
+    <hr>
     <router-view/>
   </div>
 </template>
