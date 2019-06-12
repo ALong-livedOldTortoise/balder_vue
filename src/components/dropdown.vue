@@ -1,13 +1,13 @@
 <template>
   <div class="vue-dropdown default-theme">
     <div class="search-module clearfix">
-      <input class="search-text"
-             @keyup='search($event)' :placeholder="placeholder" v-model="inputText" />
+      <input id="input-select-text" class="search-text" @blur='inputBlur()'
+             @keydown='search($event)' :placeholder="placeholder" v-model="inputText" />
       <span class="glyphicon glyphicon-search search-icon"></span>
     </div>
     <ul class="list-module" v-show="isShowData">
-      <li v-for ="(item,index) in datalist" @click="appClick(item)" :key="index">
-        <span class="list-item-text">{{item}}</span>
+      <li v-for ="(item,index) in datalist"  @click="appClick(item)" :key="index">
+        <span @click="appClick(item)" class="list-item-text">{{item.name}}</span>
       </li>
     </ul>
     <div class="tip__nodata" v-show="isShowNone">{{nodatatext}}</div>
@@ -27,46 +27,66 @@
     props: {
       'itemlist': Array,
       'placeholder': String,
-      'nodatatext': String
+      'nodatatext': String,
     },
     methods: {
       appClick: function(data) {
-        this.$emit('item-click', data)
-        this.inputText = data
-        this.isShowData = false
+        this.$emit('item-click', data);
+        this.inputText = data.name;
+        this.isShowData = false;
       },
+      //按下enter搜索
       search: function(e) {
-        let searchvalue = e.currentTarget.value
-        this.$emit('inputValue', searchvalue)
-        if (this.datalist.length === 0) {
-          this.isShowNone = true
-          this.isShowData = false
-        } else {
-          this.isShowData = true
-          this.isShowNone = false
+        if(e.keyCode===13){
+          this.clearList();
+          let searchvalue = e.currentTarget.value;
+          this.$emit('inputValue', searchvalue);
+          if (this.datalist.length === 0) {
+            this.isShowData = false;
+            this.isShowNone = false;
+          } else {
+            this.isShowData = true;
+            this.isShowNone = false;
+            this.datalist = this.itemlist;
+          }
         }
       },
+      copyData: function(list){
+        if (list.length === 0) {
+          this.isShowData = false;
+          this.isShowNone = false;
+        } else {
+          this.isShowData = true;
+          this.isShowNone = false;
+          this.datalist = list;
+        }
+      },
+      //失去焦点清空
       inputBlur() {
-        this.isShowData = false
-        this.isShowNone = false
-        this.inputText = ""
+          this.clearList();
+      },
+      clearList(){
+        this.isShowData = false;
+        this.isShowNone = false;
+        this.datalist.splice(0,this.datalist.length);
       }
     },
     mounted () {
-      this.datalist = this.itemlist
+      this.datalist = this.itemlist;
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .vue-dropdown.default-theme {
-    position: absolute;
-    left:15%;
-    width: 70%;
-    margin: 0 auto;
+    /*position: absolute;*/
+    /*left:15%;*/
+    /*width: 70%;*/
+    /*margin: 0 auto;*/
     margin-top: 1em;
-    padding: 1em;
-    z-index:10;
+    margin-left: 22em;
+    /*padding: 1em;*/
+    /*z-index:10;*/
     box-shadow: 0px 0px 10px #ccc;
     &._self-show {
       display: block!important;
@@ -77,8 +97,8 @@
       .search-text {
         width: 100%;
         height: 30px;
-        padding-right: 2em;
-        padding-left:0.5em;
+        /*padding-right: 2em;*/
+        /*padding-left:0.5em;*/
         border-radius: 0.5em;
         box-shadow: none;
         border: 1px solid #ccc;
