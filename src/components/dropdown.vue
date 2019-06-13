@@ -31,9 +31,7 @@
     },
     methods: {
       appClick: function(data) {
-        console.log('11111111111');
         this.$emit('item-click', data);
-        console.log(data);
         this.inputText = data.name;
         this.isShowData = false;
       },
@@ -73,9 +71,12 @@
           }
           obj = obj.parentNode;
         }
-        if(flag){
-          this.clearList();
-        }
+        var thisClear = this;
+        setTimeout(function () {
+          if(flag){
+            thisClear.clearList();
+          }
+        },1000);
       },
       clearList(){
         this.isShowData = false;
@@ -95,8 +96,6 @@
     /*left:15%;*/
     /*width: 70%;*/
     /*margin: 0 auto;*/
-    margin-top: 1em;
-    margin-left: 22em;
     /*padding: 1em;*/
     /*z-index:10;*/
     box-shadow: 0px 0px 10px #ccc;
