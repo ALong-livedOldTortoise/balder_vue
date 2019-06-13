@@ -47,7 +47,6 @@
             placeholder: "搜索",
             nodatatext: "暂无数据",
             selectValue: "",
-            inputText:'',
             // value: {},
             // options: []
           }
@@ -65,7 +64,9 @@
           });
         },
         itemClick(data) {
+          console.log('444444444');
           this.selectValue= data.name;
+          console.log('2222222');
         },
         getInputValue(searchvalue) {
           this.$axios.get("/product/findClassList",{
@@ -74,6 +75,7 @@
             }
           }).then((response)=>{
             var list = this.itemlist;
+            console.log(response.data)
             if(response.data.code==='200'){
               for (var j = 0; j < response.data.data.length; j++) {
                 var adwClass = {

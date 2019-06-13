@@ -31,7 +31,9 @@
     },
     methods: {
       appClick: function(data) {
+        console.log('11111111111');
         this.$emit('item-click', data);
+        console.log(data);
         this.inputText = data.name;
         this.isShowData = false;
       },
@@ -63,7 +65,17 @@
       },
       //失去焦点清空
       inputBlur() {
+        var flag = true;
+        var obj = this.GLOBAL.pointEvent.target;
+        while (obj !== undefined && obj !== null && obj.tagName.toUpperCase() !== 'BODY'){
+          if (obj.id === 'input-select-text'){
+            flag = false;
+          }
+          obj = obj.parentNode;
+        }
+        if(flag){
           this.clearList();
+        }
       },
       clearList(){
         this.isShowData = false;

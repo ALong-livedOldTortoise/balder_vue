@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-on:click="pointClick($event)">
+  <div id="app" @mousedown="pointClick($event)">
     <router-link to="/HelloWorld">首页</router-link>
     <router-link to="/newClass">添加类</router-link>
     <router-link to="/newLabel">添加标签</router-link>
